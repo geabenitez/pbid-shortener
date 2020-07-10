@@ -5,32 +5,37 @@
     >
       <!-- logo -->
       <div class="flex items-center space-x-2">
-        <span class="font-bold text-5xl leading-none tracking-wide">PBIB</span>
+        <span
+          class="font-bold text-3xl md:text-4xl xl:text-5xl leading-none tracking-wide"
+          >PBIB</span
+        >
         <div class="h-1 w-1 rounded-full bg-gray-900"></div>
-        <span class="font-light text-xl leading-none"
+        <span class="font-light text-base md:text-lg xl:text-xl leading-none"
           >URL Shortener Service</span
         >
       </div>
       <!-- form -->
-      <div class="flex w-2/3">
+      <div
+        class="flex flex-col md:flex-row w-full xl:w-2/3 px-4 md:px-6 xl:px-0 items-center space-y-2 md:space-y-0"
+      >
         <input
           type="text"
-          class="border border-blue-700 rounded-l-full w-full text-lg focus:outline-none text-gray-900 font-light px-6 py-2"
+          class="border border-blue-700 rounded-full md:rounded-l-full w-full text-lg focus:outline-none text-gray-900 font-light px-6 h-12"
         />
         <button
-          class="bg-blue-700 hover:bg-blue-800 text-white rounded-r-full flex-1 focus:outline-none font-normal uppercase px-6 py-2 leading-none transform duration-300 hover:scale-110"
+          class="bg-blue-700 hover:bg-blue-800 text-white rounded-full md:rounded-r-full w-30 md:flex-1 focus:outline-none font-normal uppercase px-6 h-12 leading-none transform duration-300 hover:scale-110"
         >
           SHORTEN
         </button>
       </div>
       <!-- history -->
-      <div class="flex flex-col w-full space-y-1">
+      <div class="flex flex-col w-full space-y-1 px-4 md:px-6 xl:px-0">
         <span
           class="text-sm font-semibold tracking-wide uppercase text-blue-900"
           >Las 100 URLS shortened</span
         >
         <div
-          class="border border-blue-600 rounded w-full h-110 p-6 overflow-scroll"
+          class="border border-blue-600 rounded w-full h-110 px-2 py-4 overflow-scroll"
         >
           <ul>
             <li
@@ -47,7 +52,9 @@
                     rel="noopener noreferrer"
                     >{{ url.short }}</a
                   >
-                  <span class="text-gray-500 text-sm">{{ url.long }}</span>
+                  <span class="hidden lg:inline-block text-gray-500 text-sm">{{
+                    url.long
+                  }}</span>
                 </div>
                 <span class="text-gray-500 font-semibold text-sm">{{
                   url.timestamp
@@ -600,7 +607,7 @@ export default Vue.extend({
       return this.urls.map((u) => {
         return {
           ...u,
-          long: truncate(u.long, 130, " (...)"),
+          long: truncate(u.long, 90, " (...)"),
         };
       });
     },
