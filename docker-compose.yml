@@ -1,0 +1,22 @@
+version: "3.1"
+
+services:
+  pbid-api:
+    image: "node:lts-alpine"
+    working_dir: /usr/src/app
+    volumes:
+      - ./api:/usr/src/app
+    ports:
+      - "2001:3000"
+    command: npm run dev
+
+  pbid-app:
+    image: "node:lts-alpine"
+    working_dir: /usr/src/app
+    volumes:
+      - ./app:/usr/src/app
+    ports:
+      - "2002:3000"
+    command: npm run dev
+    depends_on:
+      - pbid-api
