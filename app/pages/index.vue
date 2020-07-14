@@ -38,9 +38,10 @@
         <button
           v-if="url != '' && validUrl"
           class="bg-blue-700 hover:bg-blue-800 text-white rounded-full md:rounded-r-full w-30 md:flex-1 focus:outline-none font-normal uppercase px-6 h-12 leading-none transform duration-300 hover:scale-110"
+          :disabled="loading"
           @click="shorten(url)"
         >
-          SHORTEN
+          {{ loading ? "..." : "SHORTEN" }}
         </button>
       </div>
       <!-- history -->
@@ -62,13 +63,13 @@
                 <div class="flex items-center space-x-4">
                   <a
                     :href="url.short"
-                    class="hover:underline text-blue-800"
+                    class="hover:underline text-blue-800 w-45"
                     target="_blank"
                     rel="noopener noreferrer"
                     >{{ url.short }}</a
                   >
                   <span class="hidden lg:inline-block text-gray-500 text-sm">
-                    {{ url.long }}
+                    {{ url.original }}
                   </span>
                 </div>
                 <span class="text-gray-500 font-semibold text-sm">
@@ -87,6 +88,7 @@
 import Vue from "vue";
 import { truncate } from "voca";
 import axios from "axios";
+import { format } from "date-fns";
 
 const instance = axios.create({
   baseURL: "http://localhost:2001",
@@ -98,20 +100,23 @@ export default Vue.extend({
     return {
       url: "",
       urls: [],
+      loading: false,
     };
   },
   methods: {
     async shorten(url: string): Promise<void> {
+      this.url = "";
       const { data } = await instance.post("/shorten", { url });
-      console.log(data);
+      this.urls = data;
     },
   },
   computed: {
     formatedUrls(): object[] {
-      return this.urls.map((u: { long: string }) => {
+      return this.urls.map((u: { original: string; created: string }) => {
         return {
           ...u,
-          long: truncate(u.long, 90, " (...)"),
+          original: truncate(u.original, 90, " (...)"),
+          timestamp: format(new Date(u.created), "MM/dd/yyyy hh:mm"),
         };
       });
       return [];
